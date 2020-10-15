@@ -29,7 +29,7 @@ def poland_cases_by_date(day: int, month: int, year: int = 2020) -> int:
     """
     
     # Your code goes here (remove pass)
-    pass
+    return confirmed_cases.loc[confirmed_cases["Country/Region"]=="Poland"][f"{month}/{day}/20"].values[0]
 
 
 def top5_countries_by_date(day: int, month: int, year: int = 2020) -> List[str]:
@@ -49,13 +49,22 @@ def top5_countries_by_date(day: int, month: int, year: int = 2020) -> List[str]:
     """
 
     # Your code goes here (remove pass)
-    pass
+    data="%d/%d/20"%(month,day)
+<<<<<<< HEAD
+    df=(confirmed_cases[["Country/Region",data]].sort_values(by=data,ascending=True).tail(5)).sort_values(by=data,ascending=False)
+    return df["Country/Region"].values[0:5]
 
-# Function name is wrong, read the pydoc
+=======
+    df=confirmed_cases[["Country/Region",data]]
+    #print(df[["Country/Region",data]])
+    df=df.groupby("Country/Region",as_index=False).sum().sort_values(by=data,ascending=True).tail(5).sort_values(by=data,ascending=False)
+    return (df["Country/Region"].values[0:5]).tolist()
+>>>>>>> master
+
+import datetime
 def no_new_cases_count(day: int, month: int, year: int = 2020) -> int:
     """
-    Returns the number of countries/regions where the infection count in a given day
-    was NOT the same as the previous day.
+    Returns the number of countries/regions where the infection count in a given day was the same as the previous day.
 
     Ex.
     >>> no_new_cases_count(11, 2, 2020)
@@ -70,4 +79,32 @@ def no_new_cases_count(day: int, month: int, year: int = 2020) -> int:
     """
     
     # Your code goes here (remove pass)
-    pass
+<<<<<<< HEAD
+     data="%d/%d/20"%(month,day)
+    yesterday=datetime.date(year,month,day)-datetime.timedelta(days=1)
+    datayest=str("/".join([str(yesterday.month),str(yesterday.day),str(yesterday.year)[-2:]]))
+    df=[]
+    yes=confirmed_cases[datayest]
+    tod=confirmed_cases[data]
+    for i in confirmed_cases.index:
+        if ((yes[i])!=(tod[i])):
+            df.append(confirmed_cases[["Country/Region",datayest,data]])
+    return len(df)
+=======
+    data="%d/%d/20"%(month,day)
+    #datayest="%d/%d/20"%(month,day-1)
+    yesterday=datetime.date(year,month,day)-datetime.timedelta(days=1)
+    datayest=str("/".join([str(yesterday.month),str(yesterday.day),str(yesterday.year)[-2:]]))
+    df=[]
+    #print(confirmed_cases[["Country/Region",datayest,data]].index)
+    #print(confirmed_cases[[datayest,data]].values)
+    #print((confirmed_cases[datayest].values)!=(confirmed_cases[data].values))
+    yes=confirmed_cases[datayest]
+    tod=confirmed_cases[data]
+    #print(yes)
+    for i in confirmed_cases.index:
+        if ((yes[i])!=(tod[i])):
+            df.append(confirmed_cases[["Country/Region",datayest,data]])
+    #print(df)
+    return len(df)
+>>>>>>> master
